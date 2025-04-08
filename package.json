@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
-    "@mui/material": "^5.15.10",
     "@mui/icons-material": "^5.15.10",
+    "@mui/material": "^5.15.10",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.5.4",

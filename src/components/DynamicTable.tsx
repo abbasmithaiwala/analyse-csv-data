@@ -430,6 +430,13 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
             </IconButton>
           )}
           <GradientTypography variant="h5">CSV Data Table</GradientTypography>
+          <Button
+            variant="contained"
+            onClick={() => console.log("Hii")}
+            className="ml-auto"
+          >
+            Upload CSV
+          </Button>
         </Box>
         <Box sx={{ flexGrow: 1, overflow: "auto" }}>
           <MaterialReactTable
