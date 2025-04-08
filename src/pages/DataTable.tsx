@@ -1,41 +1,25 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
-import { DynamicTable } from '../components/DynamicTable';
+import React, { useEffect, useState } from "react";
+import { Container, Typography } from "@mui/material";
+import { DynamicTable } from "../components/DynamicTable";
+export default function TablePage() {
+  const [data, setData] = useState<Record<string, string | number>[]>([]);
 
-const DataTable: React.FC = () => {
-  const navigate = useNavigate();
-  const csvData = JSON.parse(localStorage.getItem('csvData') || '[]');
-
-  if (!csvData.length) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4">
-        <h1 className="text-2xl mb-4">No data available</h1>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate('/upload')}
-        >
-          Upload CSV
-        </Button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const storedData = localStorage.getItem("data");
+    if (storedData) {
+      setData(JSON.parse(storedData));
+    }
+  }, []);
 
   return (
-    <div className="min-h-screen p-4">
-      <div className="mb-4">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate('/upload')}
-        >
-          Upload New CSV
-        </Button>
-      </div>
-      <DynamicTable data={csvData} />
-    </div>
+    <Container sx={{ width: "full", height: "100%", m: 0 }}>
+      {data.length > 0 ? (
+        <DynamicTable data={data} />
+      ) : (
+        <Typography variant="body1" align="center">
+          No data available. Please upload a CSV file.
+        </Typography>
+      )}
+    </Container>
   );
-};
-
-export default DataTable; 
+}
