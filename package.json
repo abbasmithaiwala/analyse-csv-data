@@ -8,8 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src",
-    "server": "node --loader ts-node/esm server/server.ts",
-    "server:dev": "nodemon --watch server --exec node --loader ts-node/esm server/server.ts"
+    "server": "tsx server/server.ts",
+    "server:dev": "nodemon --watch server --exec tsx server/server.ts"
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
@@ -31,7 +31,8 @@
     "react-router-dom": "^6.22.1",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
