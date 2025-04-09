@@ -1,4 +1,4 @@
-import { ChevronLeft, Menu as MenuIcon } from "@mui/icons-material";
+import { ChevronLeft, Menu as MenuIcon, Download } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -203,6 +203,80 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
       value: filter.value,
     }));
     setColumnFilters(newColumnFilters);
+  };
+
+  const handleDownloadPDF = async () => {
+    try {
+      // Ensure we have data to export
+      if (data.length === 0) {
+        alert('No data available to export.');
+        return;
+      }
+
+      // Get visible columns only
+      const visibleColumns = columns
+        .filter(col => columnVisibility[col.accessorKey as string] !== false)
+        .map(col => col.accessorKey as string);
+      
+      // Get headers from visible columns
+      const headers = visibleColumns.map(key => {
+        // Find the column definition to get the header
+        const col = columns.find(c => c.accessorKey === key);
+        return col?.header as string || key;
+      });
+
+      // Create rows with only visible columns
+      const tableData = data.map(item => {
+        return visibleColumns.map(key => item[key]);
+      });
+      
+      const payload = {
+        documentPath: 'mrt.typ',
+        data: {
+          headers,
+          rows: tableData
+        }
+      };
+      
+      // Show loading indicator
+      // TODO: Add a loading state if needed
+      
+      // Use the correct server URL
+      const response = await fetch('http://localhost:3001/generate-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      if (!response.ok) {
+        if (response.headers.get('content-type')?.includes('application/json')) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to generate PDF');
+        } else {
+          throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+        }
+      }
+      
+      // Create a blob from the PDF stream
+      const blob = await response.blob();
+      
+      // Create a link to download the blob
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'data-report.pdf';
+      document.body.appendChild(a);
+      a.click();
+      
+      // Clean up
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      alert('Failed to download PDF: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    }
   };
 
   const sidebarContent = (
@@ -430,13 +504,22 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
             </IconButton>
           )}
           <GradientTypography variant="h5">CSV Data Table</GradientTypography>
-          <Button
-            variant="contained"
-            onClick={() => console.log("Hii")}
-            className="ml-auto"
-          >
-            Upload CSV
-          </Button>
+          <Box sx={{ ml: 'auto', display: 'flex', gap: 2 }}>
+            <Button
+              variant="contained"
+              onClick={() => console.log("Hii")}
+            >
+              Upload CSV
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleDownloadPDF}
+              startIcon={<Download />}
+            >
+              Download PDF
+            </Button>
+          </Box>
         </Box>
         <Box sx={{ flexGrow: 1, overflow: "auto" }}>
           <MaterialReactTable
