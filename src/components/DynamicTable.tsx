@@ -503,7 +503,7 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
             </IconButton>
           )}
           <GradientTypography variant="h5">CSV Data Table</GradientTypography>
-          <Box sx={{ ml: 'auto', display: 'flex', gap: 2 }}>
+          <Box sx={{ ml: 'auto', display: 'flex', gap: 2, marginRight: 5 }}>
             <Button
               variant="contained"
               onClick={() => console.log("Hii")}
