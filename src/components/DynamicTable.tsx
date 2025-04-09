@@ -76,6 +76,7 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
   >("");
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
   const [editingFilter, setEditingFilter] = useState<string | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const isColumnNumeric = useCallback(
     (columnId: string): boolean => {
@@ -207,6 +208,7 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
 
   const handleDownloadPDF = async () => {
     try {
+      setIsDownloading(true);
       // Ensure we have data to export
       if (data.length === 0) {
         alert('No data available to export.');
@@ -237,10 +239,6 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
         }
       };
       
-      // Show loading indicator
-      // TODO: Add a loading state if needed
-      
-      // Use the correct server URL
       const response = await fetch('http://localhost:3001/generate-pdf', {
         method: 'POST',
         headers: {
@@ -275,6 +273,8 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
     } catch (error) {
       console.error('Error downloading PDF:', error);
       alert('Failed to download PDF: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -515,8 +515,9 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
               color="primary"
               onClick={handleDownloadPDF}
               startIcon={<Download />}
+              disabled={isDownloading}
             >
-              Download PDF
+              {isDownloading ? 'Downloading...' : 'Download'}
             </Button>
           </Box>
         </Box>
