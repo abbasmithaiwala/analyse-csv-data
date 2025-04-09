@@ -1,5 +1,4 @@
 import { $typst } from '@myriaddreamin/typst.ts/dist/esm/contrib/snippet.mjs';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -19,38 +18,27 @@ export interface CsvData {
  */
 export class TypstService {
   /**
-   * Processes input data by escaping special characters
+   * Processes input data for template generation
    * @param data The CSV data to process
-   * @returns Processed CSV data with escaped special characters
+   * @returns Processed CSV data ready for template
    */
   processData(data: CsvData): { 
     processedHeaders: string[], 
     processedRows: string[][] 
   } {
-    // Process the headers and escape special characters
+    // Process the headers
     const processedHeaders = data.headers.map((header: string) => {
       if (header === null || header === undefined) return '""';
-      // Escape backslashes, quotes, and at symbols
-      const escaped = String(header)
-        .replace(/\\/g, '\\\\')
-        .replace(/"/g, '\\"')
-        .replace(/\@/g, '\\@');
-      return `"${escaped}"`;
+      return `"${header}"`;
     });
     
-    // Process rows and escape special characters
+    // Process rows
     const processedRows = data.rows.map((row: (string | number | null | undefined)[]) => {
       return row.map(cell => {
         if (cell === null || cell === undefined) {
           return '""';
         }
-        
-        // Convert to string and escape special characters
-        const escaped = String(cell)
-          .replace(/\\/g, '\\\\')
-          .replace(/"/g, '\\"')
-          .replace(/\@/g, '\\@');
-        return `"${escaped}"`;
+        return `"${cell}"`;
       });
     });
 
@@ -176,11 +164,7 @@ export class TypstService {
       console.log('PDF generated successfully. Size:', pdfBuffer.length);
       return pdfBuffer;
     } catch (error) {
-      // Create a text file with the content that caused the error for debugging
-      const debugPath = path.join(process.cwd(), 'server', 'debug-template.typ');
-      fs.writeFileSync(debugPath, content);
-      console.log('Wrote debug template to:', debugPath);
-      
+      console.log('Error generating PDF:', error);
       throw error;
     }
   }
