@@ -231,7 +231,6 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
       });
       
       const payload = {
-        documentPath: 'mrt.typ',
         data: {
           headers,
           rows: tableData
