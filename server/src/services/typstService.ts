@@ -138,7 +138,7 @@ export class TypstService {
       This PDF was generated automatically from tabular data. The data can be filtered, sorted, and managed through the web interface before exporting to this PDF document.`;
     } catch (error) {
       console.error('Error creating template:', error);
-      throw new Error(`Failed to generate template: ${error.message}`);
+      throw new Error(`Failed to generate template: ${(error as Error).message}`);
     }
   }
 

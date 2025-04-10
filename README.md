@@ -1,65 +1,66 @@
-# CSV Data Analysis Tool
+# CSV Data Analyzer - Migration Guide
 
-A React application for analyzing CSV data with a dynamic table interface.
+This project has been restructured to separate the frontend and backend for deployment on Vercel and Fly.io respectively.
 
-## Features
+## New Project Structure
 
-- Upload CSV files
-- View data in a dynamic table
-- Filter and sort data
-- Responsive design
-- Material-UI components
-- Tailwind CSS styling
+```
+/
+|-- frontend/         # React frontend for Vercel deployment
+|-- server-updated/   # Express backend for Fly.io deployment
+```
 
-## Getting Started
+## Migration Steps
 
-### Prerequisites
-
-- Node.js (v14 or higher)
-- npm or yarn
-
-### Installation
-
-1. Clone the repository
-2. Install dependencies:
+1. Move frontend source files:
    ```bash
-   npm install
-   # or
-   yarn install
+   # Copy src files to the frontend/src directory
+   cp -r src/* frontend/src/
+   
+   # Copy public files
+   cp -r public/* frontend/public/
    ```
 
-### Development
+2. Copy typst files to the server:
+   ```bash
+   # Create typst directory in server
+   mkdir -p server-updated/typst
+   
+   # Copy typst files
+   cp -r typst/* server-updated/typst/
+   ```
 
-To start the development server:
+3. Install dependencies in both projects:
+   ```bash
+   # Install frontend dependencies
+   cd frontend
+   npm install
+   
+   # Install server dependencies
+   cd ../server-updated
+   npm install
+   ```
 
-```bash
-npm start
-# or
-yarn start
-```
+4. Update API URL in frontend:
+   - For development: Set `VITE_API_URL=http://localhost:3001` in `.env.local`
+   - For production: Set `VITE_API_URL=https://your-fly-app.fly.dev` in `.env.production`
 
-The application will be available at [http://localhost:3000](http://localhost:3000).
+5. Deploy both applications:
+   - Deploy the frontend to Vercel
+   - Deploy the server to Fly.io
 
-### Building for Production
+## Deployment Instructions
 
-To create a production build:
+### Frontend (Vercel)
 
-```bash
-npm run build
-# or
-yarn build
-```
+1. Push your code to a Git repository
+2. Connect your Vercel account to your repository
+3. Set up environment variables in the Vercel dashboard
+4. Deploy!
 
-## Technologies Used
+### Backend (Fly.io)
 
-- React
-- TypeScript
-- Material-UI
-- Tailwind CSS
-- React Router
-- Papa Parse
-- Material React Table
-
-## License
-
-This project is licensed under the MIT License.
+1. Install the Fly CLI: [https://fly.io/docs/hands-on/install-flyctl/](https://fly.io/docs/hands-on/install-flyctl/)
+2. Login to Fly: `fly auth login`
+3. Deploy the application: `fly launch`
+4. For subsequent updates: `fly deploy`

@@ -1,5 +1,5 @@
 {
-  "name": "analyse-csv-data",
+  "name": "analyse-csv-data-frontend",
   "version": "0.1.0",
   "type": "module",
   "private": true,
@@ -7,38 +7,26 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint src",
-    "server": "tsx server/server.ts",
-    "server:dev": "nodemon --watch server --exec tsx server/server.ts"
+    "lint": "eslint src"
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
-    "@myriaddreamin/typst-ts-web-compiler": "0.5.5-rc7",
-    "@myriaddreamin/typst.ts": "0.5.5-rc7",
-    "@types/cors": "^2.8.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
     "framer-motion": "^11.5.4",
     "lucide-react": "^0.441.0",
     "material-react-table": "^3.0.1",
-    "nodemon": "^3.1.9",
     "papaparse": "^5.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-router-dom": "^6.22.1",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7",
-    "ts-node": "^10.9.2",
-    "tsx": "^4.19.3"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@types/express": "^5.0.1",
-    "@types/node": "^20",
     "@types/papaparse": "^5.3.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -65,4 +53,4 @@
       "last 1 safari version"
     ]
   }
-}
+} 

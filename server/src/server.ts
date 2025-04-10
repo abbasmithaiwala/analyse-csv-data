@@ -70,6 +70,11 @@ app.post('/generate-pdf', async (req: Request, res: Response) => {
   }
 });
 
+// Health check endpoint for Fly.io
+app.get('/health', (req: Request, res: Response) => {
+  res.status(200).json({ status: 'healthy' });
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
-});
+}); 
