@@ -1,57 +1,75 @@
-# CSV Data Analyzer - Migration Guide
+# CSV Data Analyzer
 
-This project has been restructured to separate the frontend and backend for deployment on Vercel and Fly.io respectively.
+A web application for analyzing and visualizing CSV data.
 
-## New Project Structure
+## Project Structure
 
 ```
 /
 |-- frontend/         # React frontend for Vercel deployment
-|-- server-updated/   # Express backend for Fly.io deployment
+|-- server/           # Express backend for Fly.io deployment
+|-- typst/            # Typst templates for document generation
 ```
 
-## Migration Steps
+## Setup Instructions
 
-1. Move frontend source files:
-   ```bash
-   # Copy src files to the frontend/src directory
-   cp -r src/* frontend/src/
-   
-   # Copy public files
-   cp -r public/* frontend/public/
-   ```
+### Prerequisites
 
-2. Copy typst files to the server:
-   ```bash
-   # Create typst directory in server
-   mkdir -p server-updated/typst
-   
-   # Copy typst files
-   cp -r typst/* server-updated/typst/
-   ```
+- Node.js (v16 or newer)
+- npm or pnpm
 
-3. Install dependencies in both projects:
+### Frontend Setup
+
+1. Navigate to the frontend directory:
    ```bash
-   # Install frontend dependencies
    cd frontend
-   npm install
-   
-   # Install server dependencies
-   cd ../server-updated
-   npm install
    ```
 
-4. Update API URL in frontend:
-   - For development: Set `VITE_API_URL=http://localhost:3001` in `.env.local`
-   - For production: Set `VITE_API_URL=https://your-fly-app.fly.dev` in `.env.production`
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   pnpm install
+   ```
 
-5. Deploy both applications:
-   - Deploy the frontend to Vercel
-   - Deploy the server to Fly.io
+3. Set up environment variables:
+   - Create a `.env.local` file based on `.env.example`
+   - For development: `VITE_API_URL=http://localhost:3001`
+   - For production: Make sure `.env.production` has the correct API URL
 
-## Deployment Instructions
+4. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   pnpm dev
+   ```
+
+### Backend Setup
+
+1. Navigate to the server directory:
+   ```bash
+   cd server
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   pnpm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   pnpm dev
+   ```
+
+## Deployment
 
 ### Frontend (Vercel)
+
+The frontend is configured for deployment on Vercel:
 
 1. Push your code to a Git repository
 2. Connect your Vercel account to your repository
@@ -60,7 +78,17 @@ This project has been restructured to separate the frontend and backend for depl
 
 ### Backend (Fly.io)
 
+The backend is configured for deployment on Fly.io:
+
 1. Install the Fly CLI: [https://fly.io/docs/hands-on/install-flyctl/](https://fly.io/docs/hands-on/install-flyctl/)
 2. Login to Fly: `fly auth login`
-3. Deploy the application: `fly launch`
-4. For subsequent updates: `fly deploy`
+3. Navigate to the server directory: `cd server`
+4. Deploy the application: `fly launch` (for first-time setup)
+5. For subsequent updates: `fly deploy`
+
+## Typst Templates
+
+The `typst/` directory contains templates for generating PDF documents:
+
+- Edit the template files in the `typst/` directory
+- The server uses these templates to generate PDFs for data reports
