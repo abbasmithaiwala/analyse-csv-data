@@ -34,7 +34,7 @@ A web application for analyzing and visualizing CSV data.
 
 3. Set up environment variables:
    - Create a `.env.local` file based on `.env.example`
-   - For development: `VITE_API_URL=http://localhost:3001`
+   - For development: `VITE_API_URL=http://localhost:8080`
    - For production: Make sure `.env.production` has the correct API URL
 
 4. Start the development server:

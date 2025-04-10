@@ -3,7 +3,7 @@
  */
 
 // Get the API URL from environment variables
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 /**
  * Interface for CSV data structure

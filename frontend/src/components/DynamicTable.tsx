@@ -239,7 +239,7 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
         }
       };
       
-      const response = await fetch('http://localhost:3001/generate-pdf', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/generate-pdf`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

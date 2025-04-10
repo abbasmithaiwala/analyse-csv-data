@@ -18,7 +18,7 @@ RUN mkdir -p typst
 RUN npm run build
 
 # Expose the port
-EXPOSE 3001
+EXPOSE 8080
 
 # Start the server
 CMD ["node", "dist/server.js"] 

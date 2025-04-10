@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Typography } from "@mui/material";
 import { DynamicTable } from "../components/DynamicTable";
 export default function TablePage() {

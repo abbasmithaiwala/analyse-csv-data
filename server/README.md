@@ -21,7 +21,7 @@ This is the backend API server for the CSV Data Analyzer project. It provides en
    npm run dev
    ```
    
-3. The server will be available at http://localhost:3001
+3. The server will be available at http://localhost:8080
 
 ## API Endpoints
 
@@ -51,7 +51,7 @@ This server is designed to be deployed on Fly.io:
 
 ## Environment Variables
 
-- `PORT`: The port to run the server on (default: 3001)
+- `PORT`: The port to run the server on (default: 8080)
 - `NODE_ENV`: The environment to run the server in (development, production)
 
 ## Connecting to the Frontend
