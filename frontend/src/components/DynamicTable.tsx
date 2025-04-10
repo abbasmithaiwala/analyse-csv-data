@@ -26,6 +26,7 @@ import {
   MaterialReactTable,
   type MRT_ColumnDef,
   type MRT_ColumnFiltersState,
+  type MRT_RowSelectionState,
 } from "material-react-table";
 import { useCallback, useMemo, useState } from "react";
 
@@ -68,6 +69,7 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     []
   );
+  const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
   const [selectedFilterColumn, setSelectedFilterColumn] = useState<string>("");
@@ -227,8 +229,17 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
         return col?.header as string || key;
       });
 
+      // Determine which rows to include in the PDF
+      const selectedRowIds = Object.keys(rowSelection).map(Number);
+      const hasSelectedRows = selectedRowIds.length > 0;
+      
+      // If rows are selected, use only those. Otherwise, use all visible rows
+      const rowsToInclude = hasSelectedRows 
+        ? data.filter((_, index) => selectedRowIds.includes(index))
+        : data;
+        
       // Create rows with only visible columns
-      const tableData = data.map(item => {
+      const tableData = rowsToInclude.map(item => {
         return visibleColumns.map(key => item[key]);
       });
       
@@ -238,6 +249,11 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
           rows: tableData
         }
       };
+      
+      // Add a message to indicate what's being exported
+      const filename = hasSelectedRows 
+        ? `selected-rows-report.pdf` 
+        : 'data-report.pdf';
       
       const response = await fetch(`${import.meta.env.VITE_API_URL}/generate-pdf`, {
         method: 'POST',
@@ -263,7 +279,7 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'data-report.pdf';
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       
@@ -517,7 +533,10 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
               startIcon={<Download />}
               disabled={isDownloading}
             >
-              {isDownloading ? 'Downloading...' : 'Download'}
+              {isDownloading 
+                ? 'Downloading...' 
+                : `Download ${Object.keys(rowSelection).length > 0 ? 'Selected' : 'All'}`
+              }
             </Button>
           </Box>
         </Box>
@@ -540,11 +559,13 @@ export const DynamicTable: React.FC<DynamicTableProps> = ({ data }) => {
               grouping,
               globalFilter: searchTerm,
               columnFilters,
+              rowSelection,
             }}
             onColumnVisibilityChange={setColumnVisibility}
             onGroupingChange={setGrouping}
             onGlobalFilterChange={setSearchTerm}
             onColumnFiltersChange={setColumnFilters}
+            onRowSelectionChange={setRowSelection}
             positionToolbarAlertBanner="bottom"
             muiTableContainerProps={{
               sx: { maxHeight: "100%", width: "100%", m: 0, border: "black" },
