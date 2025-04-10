@@ -15,11 +15,10 @@ const port = process.env.PORT || 8080;
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept']
+  allowedHeaders: '*'
 }));
 
 app.use(express.json());
-app.use('/typst', express.static(path.join(__dirname, '../typst')));
 
 app.post('/generate-pdf', async (req: Request, res: Response) => {
   try {
